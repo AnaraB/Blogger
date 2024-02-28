@@ -12,7 +12,7 @@ function HomeGuest() {
     //use libarary axios to send data to back end
     // use async/await as asyncr request
     try{
-    await Axios.post('http://localhost:8080/register', {username, email, password})
+    await Axios.post('/register', {username, email, password})
     console.log("User was successfully created")
     } catch (e){
      console.log(e.response.data);

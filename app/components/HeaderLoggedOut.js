@@ -12,7 +12,7 @@ function HeaderLoggedOut(props) {
   async function handleSubmit(e){
     e.preventDefault();
     try{
-     const response = await Axios.post("http://localhost:8080/login", {username, password})
+     const response = await Axios.post("/login", {username, password})
      if(response.data){
       //persistant data, store data in local storage, so browser remembers  username and password that loggedIn
       localStorage.setItem("myblogappToken", response.data.token)
