@@ -1,8 +1,16 @@
-import React from 'react';
-import {Link} from 'react-router-dom';
-import HeaderLoggedOut from './HeaderLoggedOut';
+import React, {useState} from 'react'
+import {Link} from 'react-router-dom'
+import HeaderLoggedOut from './HeaderLoggedOut'
+import HeaderLoggedIn from './HeaderLoggedIn'
 
-function Header() {
+
+ //depending on wheter the user is logged in OR logged out
+ //use ternary operator
+ //to  change  the component from <HeaderLoggedIn /> to <HeaderLoggedOut />
+//to do that, keep track of state
+
+function Header(props) {
+
   return (
 
     <header className="header-bar bg-primary mb-3">
@@ -12,7 +20,7 @@ function Header() {
           ComplexApp
         </Link>
       </h4>
-     <HeaderLoggedOut />
+     {props.loggedIn ? <HeaderLoggedIn setLoggedIn={props.setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={props.setLoggedIn} />}
     </div>
   </header>
   )

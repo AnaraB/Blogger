@@ -3,7 +3,6 @@ import Page from './Page'
 import Axios from 'axios'
 
 function HomeGuest() {
-  //use obj destructuring method to get only necessary methods for this task
   const [username, setUsername] = useState()
   const [email, setEmail] = useState()
   const [password, setPassword] = useState();

@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react"
 import Axios from 'axios'
 
 
-
-function HeaderLoggedOut() {
+// to access setLoggedIn state from HeaderLoggedIn component , we need to add props to this function 
+// then pass  props.setLoggedIn(true) when we press Sign in btn 
+function HeaderLoggedOut(props) {
   //keep track of latest username and values in state
   const [username, setUsername] = useState();
   const [password, setPassword] = useState();
@@ -13,6 +14,11 @@ function HeaderLoggedOut() {
     try{
      const response = await Axios.post("http://localhost:8080/login", {username, password})
      if(response.data){
+      //persistant data, store data in local storage, so browser remembers  username and password that loggedIn
+      localStorage.setItem("myblogappToken", response.data.token)
+      localStorage.setItem("myblogappUsername", response.data.username)
+      localStorage.setItem("myblogappAvatar", response.data.avatar)
+      props.setLoggedIn(true)
        
      } else {
       console.log("Incorrect username /password")
