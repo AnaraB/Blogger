@@ -13,19 +13,28 @@ import Footer from "./components/Footer";
 import About from "./components/About";
 import Terms from "./components/Terms";
 import CreatePost from "./components/CreatePost";
+import ViewSinglePost from "./components/ViewSinlePost";
+import FlashMessages from "./components/FlashMessages";
 
 // Due to page contents depend on whether user is logged in or logged out (which is stored in header component)
 // we need to Lift the state up (store it Main), meaning moving the state component up to the tree component so all children
 // and sub components can pass the state down as props
 function Main() {
-  // store and track loggedIn and loggedOut states
+  // created pieces of  states
   const [loggedIn, setLoggedIn] = useState(Boolean(localStorage.getItem("myblogappToken")));
+  const [flashMessages, setFlashMessages] = useState([])
+
+  function addFlashMessage(msg){
+   setFlashMessages(prev => prev.concat(msg))
+  }
   return (
    <BrowserRouter>
+   <FlashMessages messages={flashMessages} />
     <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
     <Routes>
        <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
-       <Route path="/create-post" element={<CreatePost />} />
+       <Route path="/post/:id" element={<ViewSinglePost />} />
+       <Route path="/create-post" element={<CreatePost addFlashMessage={addFlashMessage} />} />
        <Route path="/about-us" element={<About />} />
        <Route path="/terms" element={<Terms />} />
     </Routes>
