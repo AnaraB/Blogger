@@ -16,10 +16,10 @@ function HeaderLoggedOut(props) {
       const response = await Axios.post("/login", { username, password });
       if (response.data) {
         //persistant data, store data in local storage, so browser remembers  username and password that loggedIn
-        localStorage.setItem("myblogappToken", response.data.token);
+        /* localStorage.setItem("myblogappToken", response.data.token);
         localStorage.setItem("myblogappUsername", response.data.username);
-        localStorage.setItem("myblogappAvatar", response.data.avatar);
-        appDispatch({ type: "login" });
+        localStorage.setItem("myblogappAvatar", response.data.avatar); */
+        appDispatch({ type: "login", data: response.data });
       } else {
         console.log("Incorrect username /password");
       }
