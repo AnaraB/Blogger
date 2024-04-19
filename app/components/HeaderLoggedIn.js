@@ -1,11 +1,13 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext } from "react"
 import {Link} from 'react-router-dom'
+import ExampleContext from "../ExampleContext"
 
 function HeaderLoggedIn(props) {
+  const { setLoggedIn } = useContext(ExampleContext)
   function handleLogOut(){
 // in order for the btn sign out to loggedOut
 //add props param and pass it as false and remove from local storage
-    props.setLoggedIn(false)
+    setLoggedIn(false)
 
     localStorage.removeItem("myblogappToken")
     localStorage.removeItem("myblogappUsername")

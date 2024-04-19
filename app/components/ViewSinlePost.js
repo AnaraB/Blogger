@@ -1,31 +1,52 @@
-import React, { useEffect } from "react"
-import Page from "./Page"
+import React, { useEffect } from "react";
+import Page from "./Page";
 
 function ViewSinglePost() {
   return (
-    <Page title= "Fake Hardcoded title">
+    <Page title="Fake Hardcoded title">
       <div class="d-flex justify-content-between">
-        <h2>Example Post Title</h2>
+        <h2>The World Voyager</h2>
         <span class="pt-2">
-          <a href="#" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
-          <a class="delete-post-button text-danger" title="Delete"><i class="fas fa-trash"></i></a>
+          <a href="#" class="text-primary mr-2" title="Edit">
+            <i class="fas fa-edit"></i>
+          </a>
+          <a class="delete-post-button text-danger" title="Delete">
+            <i class="fas fa-trash"></i>
+          </a>
         </span>
       </div>
 
       <p class="text-muted small mb-4">
         <a href="#">
-          <img class="avatar-tiny" src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128" />
+          <img
+            class="avatar-tiny"
+            src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128"
+          />
         </a>
         Posted by <a href="#">brad</a> on 2/10/2020
       </p>
 
       <div class="body-content">
-        <p>Lorem ipsum dolor sit <strong>example</strong> post adipisicing elit. Iure ea at esse, tempore qui possimus soluta impedit natus voluptate, sapiente saepe modi est pariatur. Aut voluptatibus aspernatur fugiat asperiores at.</p>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae quod asperiores corrupti omnis qui, placeat neque modi, dignissimos, ab exercitationem eligendi culpa explicabo nulla tempora rem? Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure ea at esse, tempore qui possimus soluta impedit natus voluptate, sapiente saepe modi est pariatur. Aut voluptatibus aspernatur fugiat asperiores at.</p>
+        <p>
+          We arrived at Cierva Cove at 7 am and I had my typical hot chocolate
+          up in the Dome Observation Lounge on Deck 7. The weather did not look
+          particularly appealing, though it was calm, so the kayakers were able
+          to go out. For me, I decided to skip the day's zodiac excursion. It
+          was nice. I took a long hot shower, read my book, and just enjoyed
+          some me time. L went and said it was actually pretty good, though it
+          did start to snow. They saw more swimming penguins and humpback
+          whales, but they may have even seen a blue whale! It was not a
+          humpback and was huge, so that was exciting. He also showed me a video
+          he took of two penguins walking along a mini iceberg.... and one fell
+          off! So cute! It took us three hours to travel to our next
+          destination, Palaver Point, where we were supposed to have an
+          afternoon land excursion. However, the weather did not cooperate and
+          the excursion was cancelled. So, not much to talk about this day;
+          instead, I'll go over a little of life on board the World Voyager.
+        </p>
       </div>
-      
     </Page>
-  )
+  );
 }
 
-export default ViewSinglePost
+export default ViewSinglePost;

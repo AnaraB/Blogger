@@ -17,10 +17,10 @@ function Header(props) {
     <div className="container d-flex flex-column flex-md-row align-items-center p-3">
       <h4 className="my-0 mr-md-auto font-weight-normal">
         <Link to="/" className="text-white">
-          ComplexApp
+         My Travel Blog
         </Link>
       </h4>
-     {props.loggedIn ? <HeaderLoggedIn setLoggedIn={props.setLoggedIn} /> : <HeaderLoggedOut setLoggedIn={props.setLoggedIn} />}
+     {props.loggedIn ? <HeaderLoggedIn /> : <HeaderLoggedOut/>}
     </div>
   </header>
   )
