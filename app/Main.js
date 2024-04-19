@@ -1,8 +1,12 @@
 import React, { useState, useReducer } from "react";
 import ReactDOM from "react-dom/client";
+import { useImmerReducer } from 'use-immer';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Axios from "axios";
 Axios.defaults.baseURL = "http://localhost:8080";
+
+import StateContext from "./StateContext";
+import DispatchContext from "./DispatchContext";
 
 //My Components
 import Header from "./components/Header";
@@ -14,8 +18,7 @@ import Terms from "./components/Terms";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinlePost";
 import FlashMessages from "./components/FlashMessages";
-import StateContext from "./StateContext";
-import DispatchContext from "./DispatchContext";
+
 
 // Due to page contents depend on whether user is logged in or logged out (which is stored in header component)
 // we need to Lift the state up (store it Main), meaning moving the state component up to the tree component so all children
@@ -25,44 +28,36 @@ function Main() {
     loggedIn: Boolean(localStorage.getItem("myblogappToken")),
     flashMessages: [],
   };
-  function ourReducer(state, action) {
+  function ourReducer(draft, action) {
+    //use Immer package that gives us a draft of state that we can directly modify. And Immer will update state for us. 
     switch (action.type) {
       case "login":
         //in react we dont not odify or mutate current state to make changes
-        return { loggedIn: true, flashMessages: state.flashMessages };
+       draft.loggedIn = true
+       return
       case "logout":
-        return { loggedIn: false, flashMessages: state.flashMessages };
+        draft.loggedIn = false
+        return
       case "flashMessage":
-        return {
-          loggedIn: state.loggedIn,
-          flashMessages: state.flashMessages.concat(action.value),
-        };
+       draft.flashMessages.push(action.value)
+       return
     }
   }
   // dispatch in useReducer, is used to tell WHAT actions we want to be done
   //ourReducer function is in charge of HOW our dispatch actions are done
-  const [state, dispatch] = useReducer(ourReducer, initialState);
-  // // created pieces of  states
-  // const [loggedIn, setLoggedIn] = useState();
-  // const [flashMessages, setFlashMessages] = useState([])
-
-  // //create general and reusable function to display func
-  // function addFlashMessage(msg){
-  //  setFlashMessages(prev => prev.concat(msg))
-  // }
+  const [state, dispatch] = useImmerReducer(ourReducer, initialState);
 
   return (
     //setting value={{ state, dispatch }} in ExampleContext.Provider is not optimal cos it will force ALL components re-render each time even when only dipatched is used and  one specific component needs re-rendering
     //its better practice to have separate context provder for state and separate context provider for dispatch
 
-    //  <ExampleContext.Provider value={{ state, dispatch }}>
     <StateContext.Provider value={state}>
       <DispatchContext.Provider value={dispatch}>
         <BrowserRouter>
-          <FlashMessages messages={flashMessages} />
-          <Header loggedIn={loggedIn} />
+          <FlashMessages messages={state.flashMessages} />
+          <Header />
           <Routes>
-            <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
+            <Route path="/" element={state.loggedIn ? <Home /> : <HomeGuest />} />
             <Route path="/post/:id" element={<ViewSinglePost />} />
             <Route path="/create-post" element={<CreatePost />} />
             <Route path="/about-us" element={<About />} />
@@ -73,7 +68,6 @@ function Main() {
       </DispatchContext.Provider>
     </StateContext.Provider>
 
-    //  </ExampleContext.Provider>
   );
 }
 
