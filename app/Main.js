@@ -1,21 +1,21 @@
-import React, {useState, useReducer } from "react";
+import React, { useState, useReducer } from "react";
 import ReactDOM from "react-dom/client";
-import {BrowserRouter, Routes, Route} from 'react-router-dom';
-import Axios from 'axios'
-Axios.defaults.baseURL = 'http://localhost:8080'
-
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Axios from "axios";
+Axios.defaults.baseURL = "http://localhost:8080";
 
 //My Components
-import Header from './components/Header';
-import HomeGuest from './components/HomeGuest';
-import Home from "./components/Home"
+import Header from "./components/Header";
+import HomeGuest from "./components/HomeGuest";
+import Home from "./components/Home";
 import Footer from "./components/Footer";
 import About from "./components/About";
 import Terms from "./components/Terms";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinlePost";
 import FlashMessages from "./components/FlashMessages";
-import ExampleContext from './ExampleContext';
+import StateContext from "./StateContext";
+import DispatchContext from "./DispatchContext";
 
 // Due to page contents depend on whether user is logged in or logged out (which is stored in header component)
 // we need to Lift the state up (store it Main), meaning moving the state component up to the tree component so all children
@@ -23,60 +23,63 @@ import ExampleContext from './ExampleContext';
 function Main() {
   const initialState = {
     loggedIn: Boolean(localStorage.getItem("myblogappToken")),
-    flashMessages:  []
-  }
+    flashMessages: [],
+  };
   function ourReducer(state, action) {
-    switch(action.type) {
+    switch (action.type) {
       case "login":
         //in react we dont not odify or mutate current state to make changes
-        return {loggedIn: true, flashMessages: state.flashMessages}
+        return { loggedIn: true, flashMessages: state.flashMessages };
       case "logout":
-        return  {loggedIn: false, flashMessages: state.flashMessages}
+        return { loggedIn: false, flashMessages: state.flashMessages };
       case "flashMessage":
-        return {loggedIn: state.loggedIn, flashMessages: state.flashMessages.concat(action.value)}
-      }
+        return {
+          loggedIn: state.loggedIn,
+          flashMessages: state.flashMessages.concat(action.value),
+        };
+    }
   }
   // dispatch in useReducer, is used to tell WHAT actions we want to be done
-  //ourReducer function is in charge of HOW our dispatch actions are done 
-  const [state, dispatch] = useReducer(ourReducer, initialState )
+  //ourReducer function is in charge of HOW our dispatch actions are done
+  const [state, dispatch] = useReducer(ourReducer, initialState);
   // // created pieces of  states
   // const [loggedIn, setLoggedIn] = useState();
   // const [flashMessages, setFlashMessages] = useState([])
 
-  // //create general and reusable function to display func 
+  // //create general and reusable function to display func
   // function addFlashMessage(msg){
   //  setFlashMessages(prev => prev.concat(msg))
   // }
 
-
   return (
-
-    //setting value={{ state, dispatch }} is not optimal as it will force ALL components re-render each time even when only dipatched is used and  one specific component needs re-rendering 
+    //setting value={{ state, dispatch }} in ExampleContext.Provider is not optimal cos it will force ALL components re-render each time even when only dipatched is used and  one specific component needs re-rendering
     //its better practice to have separate context provder for state and separate context provider for dispatch
-    
- <ExampleContext.Provider value={{ state, dispatch }}>
-   <BrowserRouter>
-   <FlashMessages messages={flashMessages} />
-    <Header loggedIn={loggedIn} />
-    <Routes>
-       <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
-       <Route path="/post/:id" element={<ViewSinglePost />} />
-       <Route path="/create-post" element={<CreatePost />} />
-       <Route path="/about-us" element={<About />} />
-       <Route path="/terms" element={<Terms />} />
-    </Routes>
-    <Footer />
-   </BrowserRouter>
-   </ExampleContext.Provider>
+
+    //  <ExampleContext.Provider value={{ state, dispatch }}>
+    <StateContext.Provider value={state}>
+      <DispatchContext.Provider value={dispatch}>
+        <BrowserRouter>
+          <FlashMessages messages={flashMessages} />
+          <Header loggedIn={loggedIn} />
+          <Routes>
+            <Route path="/" element={loggedIn ? <Home /> : <HomeGuest />} />
+            <Route path="/post/:id" element={<ViewSinglePost />} />
+            <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/about-us" element={<About />} />
+            <Route path="/terms" element={<Terms />} />
+          </Routes>
+          <Footer />
+        </BrowserRouter>
+      </DispatchContext.Provider>
+    </StateContext.Provider>
+
+    //  </ExampleContext.Provider>
   );
 }
 
 const root = ReactDOM.createRoot(document.querySelector("#app"));
 root.render(<Main />);
 
-if(module.hot){
-module.hot.accept()
+if (module.hot) {
+  module.hot.accept();
 }
-
-
-
