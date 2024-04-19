@@ -39,16 +39,22 @@ function Main() {
   // dispatch in useReducer, is used to tell WHAT actions we want to be done
   //ourReducer function is in charge of HOW our dispatch actions are done 
   const [state, dispatch] = useReducer(ourReducer, initialState )
-  // created pieces of  states
-  const [loggedIn, setLoggedIn] = useState();
-  const [flashMessages, setFlashMessages] = useState([])
+  // // created pieces of  states
+  // const [loggedIn, setLoggedIn] = useState();
+  // const [flashMessages, setFlashMessages] = useState([])
 
-  //create general and reusable function to display func 
-  function addFlashMessage(msg){
-   setFlashMessages(prev => prev.concat(msg))
-  }
+  // //create general and reusable function to display func 
+  // function addFlashMessage(msg){
+  //  setFlashMessages(prev => prev.concat(msg))
+  // }
+
+
   return (
-    <ExampleContext.Provider value={{addFlashMessage, setLoggedIn}}>
+
+    //setting value={{ state, dispatch }} is not optimal as it will force ALL components re-render each time even when only dipatched is used and  one specific component needs re-rendering 
+    //its better practice to have separate context provder for state and separate context provider for dispatch
+    
+ <ExampleContext.Provider value={{ state, dispatch }}>
    <BrowserRouter>
    <FlashMessages messages={flashMessages} />
     <Header loggedIn={loggedIn} />
