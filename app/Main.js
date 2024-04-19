@@ -18,6 +18,7 @@ import Terms from "./components/Terms";
 import CreatePost from "./components/CreatePost";
 import ViewSinglePost from "./components/ViewSinlePost";
 import FlashMessages from "./components/FlashMessages";
+import Profile from "./components/Profile";
 
 // Due to page contents depend on whether user is logged in or logged out (which is stored in header component)
 // we need to Lift the state up (store it Main), meaning moving the state component up to the tree component so all children
@@ -74,6 +75,7 @@ function Main() {
           <FlashMessages messages={state.flashMessages} />
           <Header />
           <Routes>
+            <Route path="/profile/:username/*" element={<Profile />} />
             <Route
               path="/"
               element={state.loggedIn ? <Home /> : <HomeGuest />}
@@ -93,6 +95,8 @@ function Main() {
 const root = ReactDOM.createRoot(document.querySelector("#app"));
 root.render(<Main />);
 
+
+// browser doesn't need to re-fresh but loading new JavaScript file async on the fly
 if (module.hot) {
   module.hot.accept();
 }
