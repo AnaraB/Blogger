@@ -1,11 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Page from "./Page";
+import { useParams } from "react-router-dom";
+import { Axios } from "axios";
 
 function ViewSinglePost() {
+  const { id } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
+  const [post, setPost] = useState();
+
+  useEffect(() => {
+    async function fetchPost() {
+      try {
+        const response = await Axios.get(`/post/${id}`);
+        setPost(response.data);
+        setIsLoading(false);
+      } catch (e) {
+        console.log("There was a problem");
+      }
+    }
+    fetchPost();
+  }, []);
+
+  if(isLoading) 
+   return(
+    <Page title="...">
+      <div>Loading...</div>
+    </Page>
+  )
+
+
+  const date = new Date(post.createdDate)
+  const dateFormated = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
   return (
     <Page title="Fake Hardcoded title">
       <div className="d-flex justify-content-between">
-        <h2>The World Voyager</h2>
+        <h2>{post.title}</h2>
         <span className="pt-2">
           <a href="#" className="text-primary mr-2" title="Edit">
             <i className="fas fa-edit"></i>
@@ -23,11 +52,12 @@ function ViewSinglePost() {
             src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128"
           />
         </a>
-        Posted by <a href="#">brad</a> on 2/10/2020
+        Posted by <a href="#">${post.author.username}</a> on 2/10/2020
       </p>
 
       <div className="body-content">
-        <p>
+        {post.body}
+        {/* <p>
           We arrived at Cierva Cove at 7 am and I had my typical hot chocolate
           up in the Dome Observation Lounge on Deck 7. The weather did not look
           particularly appealing, though it was calm, so the kayakers were able
@@ -43,7 +73,7 @@ function ViewSinglePost() {
           afternoon land excursion. However, the weather did not cooperate and
           the excursion was cancelled. So, not much to talk about this day;
           instead, I'll go over a little of life on board the World Voyager.
-        </p>
+        </p> */}
       </div>
     </Page>
   );
