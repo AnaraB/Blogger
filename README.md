@@ -1,2 +1,2 @@
 # MyBlog
-Blog based on React and MongoDB
+MERN stack social media application
