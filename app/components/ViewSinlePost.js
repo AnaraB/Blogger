@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import Page from "./Page";
-import { useParams } from "react-router-dom";
-import { Axios } from "axios";
+import { useParams, Link } from "react-router-dom";
+import  Axios from "axios";
 
 function ViewSinglePost() {
   const { id } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [post, setPost] = useState();
 
+
+   // Fetching post data from the server
   useEffect(() => {
     async function fetchPost() {
       try {
         const response = await Axios.get(`/post/${id}`);
+        console.log(response.data);
         setPost(response.data);
         setIsLoading(false);
       } catch (e) {
         console.log("There was a problem");
+        console.log(e);
       }
     }
     fetchPost();
@@ -31,8 +35,9 @@ function ViewSinglePost() {
 
   const date = new Date(post.createdDate)
   const dateFormated = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+
   return (
-    <Page title="Fake Hardcoded title">
+    <Page title={post.title}>
       <div className="d-flex justify-content-between">
         <h2>{post.title}</h2>
         <span className="pt-2">
@@ -46,13 +51,13 @@ function ViewSinglePost() {
       </div>
 
       <p className="text-muted small mb-4">
-        <a href="#">
+        <Link to={`/profile/${post.author.username}`}>
           <img
             className="avatar-tiny"
-            src="https://gravatar.com/avatar/b9408a09298632b5151200f3449434ef?s=128"
+            src={post.author.avatar}
           />
-        </a>
-        Posted by <a href="#">${post.author.username}</a> on 2/10/2020
+        </Link>
+        Posted by <Link to={`/profile/${post.author.username}`}>{post.author.username}</Link> on 2/10/2020
       </p>
 
       <div className="body-content">

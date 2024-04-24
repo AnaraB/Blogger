@@ -11,10 +11,10 @@ function Page(props) {
   useEffect(()=>{
     //use web browser or DOM based code to update title and scroll the page to the top
     //manually update the title of the page
-    document.title = `${props.title} | ComplexApp`
+    document.title = `${props.title} | Blogger`
     //tell the browser to scroll up the page when page is open 
     window.scrollTo(0, 0)
-  }, [])
+  }, [props.title]) //watch when title changes -update title in app tab
 
 
 
