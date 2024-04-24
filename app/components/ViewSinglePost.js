@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Page from "./Page";
 import { useParams, Link } from "react-router-dom";
 import  Axios from "axios";
+import LoadingIcon from "./LoadingIcon";
 
 function ViewSinglePost() {
   const { id } = useParams();
@@ -11,9 +12,13 @@ function ViewSinglePost() {
 
    // Fetching post data from the server
   useEffect(() => {
+    //create clean up function to cancel axios request
+   const ourRequest = Axios.CancelToken.source()
+
     async function fetchPost() {
+
       try {
-        const response = await Axios.get(`/post/${id}`);
+        const response = await Axios.get(`/post/${id}`, {cancelToken: ourRequest.token});
         console.log(response.data);
         setPost(response.data);
         setIsLoading(false);
@@ -22,13 +27,18 @@ function ViewSinglePost() {
         console.log(e);
       }
     }
-    fetchPost();
+    fetchPost()
+    // call clean up function, cancel axios request if not needed any more 
+    return () => {
+      ourRequest.cancel()
+
+    }
   }, []);
 
   if(isLoading) 
    return(
     <Page title="...">
-      <div>Loading...</div>
+     <LoadingIcon />
     </Page>
   )
 
@@ -62,23 +72,6 @@ function ViewSinglePost() {
 
       <div className="body-content">
         {post.body}
-        {/* <p>
-          We arrived at Cierva Cove at 7 am and I had my typical hot chocolate
-          up in the Dome Observation Lounge on Deck 7. The weather did not look
-          particularly appealing, though it was calm, so the kayakers were able
-          to go out. For me, I decided to skip the day's zodiac excursion. It
-          was nice. I took a long hot shower, read my book, and just enjoyed
-          some me time. L went and said it was actually pretty good, though it
-          did start to snow. They saw more swimming penguins and humpback
-          whales, but they may have even seen a blue whale! It was not a
-          humpback and was huge, so that was exciting. He also showed me a video
-          he took of two penguins walking along a mini iceberg.... and one fell
-          off! So cute! It took us three hours to travel to our next
-          destination, Palaver Point, where we were supposed to have an
-          afternoon land excursion. However, the weather did not cooperate and
-          the excursion was cancelled. So, not much to talk about this day;
-          instead, I'll go over a little of life on board the World Voyager.
-        </p> */}
       </div>
     </Page>
   );

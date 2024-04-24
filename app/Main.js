@@ -16,7 +16,7 @@ import Footer from "./components/Footer";
 import About from "./components/About";
 import Terms from "./components/Terms";
 import CreatePost from "./components/CreatePost";
-import ViewSinglePost from "./components/ViewSinlePost";
+import ViewSinglePost from "./components/ViewSinglePost";
 import FlashMessages from "./components/FlashMessages";
 import Profile from "./components/Profile";
 
